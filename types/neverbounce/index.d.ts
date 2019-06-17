@@ -3,29 +3,30 @@
 // Definitions by: George Novitskiy <https://github.com/georgenov>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.2
+export = NeverBounce;
 
-export class NeverBounce {
-    constructor(config: Config);
+declare class NeverBounce {
+    constructor(config: NB.Config);
 
-    getConfig(): Config;
+    getConfig(): NB.Config;
 
-    getRequestOpts(opts: ConfigOptions): ConfigOptions;
+    getRequestOpts(opts: NB.ConfigOptions): NB.ConfigOptions;
 
     setApiKey(key: string): void;
 
     setHost(host: string): void;
 
-    errors: Errors;
+    errors: NB.Errors;
 
-    account: Account;
+    account: NB.Account;
 
-    jobs: Jobs;
+    jobs: NB.Jobs;
 
-    poe: Poe;
+    poe: NB.Poe;
 
-    single: Single;
+    single: NB.Single;
 
-    static defaultConfig: Config;
+    static defaultConfig: NB.Config;
 
     static job: {
         inputType: {
@@ -82,64 +83,66 @@ export class NeverBounce {
     };
 }
 
-export class Errors extends Error {
-    constructor(type: string, message: string);
+declare namespace NB {
+    class Errors extends Error {
+        constructor(type: string, message: string);
 
-    static _lut: {
-        general_failure: string,
-        auth_failure: string,
-        bad_referrer: string,
-        throttle_triggered: string,
-    };
+        static _lut: {
+            general_failure: string,
+            auth_failure: string,
+            bad_referrer: string,
+            throttle_triggered: string,
+        };
 
-    static AuthError: string;
-    static BadReferrerError: string;
-    static GeneralError: string;
-    static ThrottleError: string;
+        static AuthError: string;
+        static BadReferrerError: string;
+        static GeneralError: string;
+        static ThrottleError: string;
+    }
+
+    class Account {
+        info(): Promise<Response>;
+    }
+
+    class Jobs {
+        search(query: any): Promise<Response>;
+
+        create(input: any, inputLocation: any, fileName: any, runSample?: any, autoParse?: any, autoStart?: any): Promise<Response>;
+
+        parse(jobId: number, autoStart?: any): Promise<Response>;
+
+        start(jobId: number, runSample?: any): Promise<Response>;
+
+        status(jobId: number): Promise<Response>;
+
+        results(jobId: number, query: any): Promise<Response>;
+
+        download(jobId: number): Promise<Response>;
+    }
+
+    class Poe {
+        confirm(email: string, result: string, confirmationToken: string, transactionId: string): Promise<Response>;
+    }
+
+    class Single {
+        check(email: string, addressInfo?: boolean, creditsInfo?: boolean, timeout?: any): Promise<Response>;
+    }
+
+    interface Config {
+        apiKey?: any;
+        opts?: ConfigOptions;
+        timeout?: number;
+    }
+
+    interface ConfigOptions {
+        acceptedType?: string;
+        headers?: {
+            "Content-Type"?: string;
+            "User-Agent"?: string;
+        };
+        host?: string;
+        port?: number;
+    }
+
+    type Response = object;
 }
-
-export class Account {
-    info(): Promise<Response>;
-}
-
-export class Jobs {
-    search(query: any): Promise<Response>;
-
-    create(input: any, inputLocation: any, fileName: any, runSample?: any, autoParse?: any, autoStart?: any): Promise<Response>;
-
-    parse(jobId: number, autoStart?: any): Promise<Response>;
-
-    start(jobId: number, runSample?: any): Promise<Response>;
-
-    status(jobId: number): Promise<Response>;
-
-    results(jobId: number, query: any): Promise<Response>;
-
-    download(jobId: number): Promise<Response>;
-}
-
-export class Poe {
-    confirm(email: string, result: string, confirmationToken: string, transactionId: string): Promise<Response>;
-}
-
-export class Single {
-    check(email: string, addressInfo?: boolean, creditsInfo?: boolean, timeout?: any): Promise<Response>;
-}
-
-export interface Config {
-    apiKey?: any;
-    opts?: ConfigOptions;
-    timeout?: number;
-}
-
-export interface ConfigOptions {
-    acceptedType?: string;
-    headers?: {
-        "Content-Type"?: string;
-        "User-Agent"?: string;
-    };
-    host?: string;
-    port?: number;
-}
-
-export type Response = object;
