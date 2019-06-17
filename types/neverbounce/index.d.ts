@@ -6,27 +6,27 @@
 export = NeverBounce;
 
 declare class NeverBounce {
-    constructor(config: NB.Config);
+    constructor(config: Config);
 
-    getConfig(): NB.Config;
+    getConfig(): Config;
 
-    getRequestOpts(opts: NB.ConfigOptions): NB.ConfigOptions;
+    getRequestOpts(opts: ConfigOptions): ConfigOptions;
 
     setApiKey(key: string): void;
 
     setHost(host: string): void;
 
-    errors: NB.Errors;
+    errors: Errors;
 
-    account: NB.Account;
+    account: Account;
 
-    jobs: NB.Jobs;
+    jobs: Jobs;
 
-    poe: NB.Poe;
+    poe: Poe;
 
-    single: NB.Single;
+    single: Single;
 
-    static defaultConfig: NB.Config;
+    static defaultConfig: Config;
 
     static job: {
         inputType: {
@@ -83,66 +83,64 @@ declare class NeverBounce {
     };
 }
 
-declare namespace NB {
-    class Errors extends Error {
-        constructor(type: string, message: string);
+declare class Errors extends Error {
+    constructor(type: string, message: string);
 
-        static _lut: {
-            general_failure: string,
-            auth_failure: string,
-            bad_referrer: string,
-            throttle_triggered: string,
-        };
+    static _lut: {
+        general_failure: string,
+        auth_failure: string,
+        bad_referrer: string,
+        throttle_triggered: string,
+    };
 
-        static AuthError: string;
-        static BadReferrerError: string;
-        static GeneralError: string;
-        static ThrottleError: string;
-    }
-
-    class Account {
-        info(): Promise<Response>;
-    }
-
-    class Jobs {
-        search(query: any): Promise<Response>;
-
-        create(input: any, inputLocation: any, fileName: any, runSample?: any, autoParse?: any, autoStart?: any): Promise<Response>;
-
-        parse(jobId: number, autoStart?: any): Promise<Response>;
-
-        start(jobId: number, runSample?: any): Promise<Response>;
-
-        status(jobId: number): Promise<Response>;
-
-        results(jobId: number, query: any): Promise<Response>;
-
-        download(jobId: number): Promise<Response>;
-    }
-
-    class Poe {
-        confirm(email: string, result: string, confirmationToken: string, transactionId: string): Promise<Response>;
-    }
-
-    class Single {
-        check(email: string, addressInfo?: boolean, creditsInfo?: boolean, timeout?: any): Promise<Response>;
-    }
-
-    interface Config {
-        apiKey?: any;
-        opts?: ConfigOptions;
-        timeout?: number;
-    }
-
-    interface ConfigOptions {
-        acceptedType?: string;
-        headers?: {
-            "Content-Type"?: string;
-            "User-Agent"?: string;
-        };
-        host?: string;
-        port?: number;
-    }
-
-    type Response = object;
+    static AuthError: string;
+    static BadReferrerError: string;
+    static GeneralError: string;
+    static ThrottleError: string;
 }
+
+declare class Account {
+    info(): Promise<Response>;
+}
+
+declare class Jobs {
+    search(query: any): Promise<Response>;
+
+    create(input: any, inputLocation: any, fileName: any, runSample?: any, autoParse?: any, autoStart?: any): Promise<Response>;
+
+    parse(jobId: number, autoStart?: any): Promise<Response>;
+
+    start(jobId: number, runSample?: any): Promise<Response>;
+
+    status(jobId: number): Promise<Response>;
+
+    results(jobId: number, query: any): Promise<Response>;
+
+    download(jobId: number): Promise<Response>;
+}
+
+declare class Poe {
+    confirm(email: string, result: string, confirmationToken: string, transactionId: string): Promise<Response>;
+}
+
+declare class Single {
+    check(email: string, addressInfo?: boolean, creditsInfo?: boolean, timeout?: any): Promise<Response>;
+}
+
+interface Config {
+    apiKey?: any;
+    opts?: ConfigOptions;
+    timeout?: number;
+}
+
+interface ConfigOptions {
+    acceptedType?: string;
+    headers?: {
+        "Content-Type"?: string;
+        "User-Agent"?: string;
+    };
+    host?: string;
+    port?: number;
+}
+
+type Response = object;
